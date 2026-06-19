@@ -51,7 +51,7 @@ def backup():
       `password_md5` varchar(32)
     );
     
-    INSERT INTO `users` VALUES ('admin', '93d8b51239aa806b7daaf688321cb170');
+    INSERT INTO `users` VALUES ('admin', 'd86863a4d839d195805e39363613b6fe');
     """
     response = make_response(content)
     response.headers["Content-Type"] = "text/plain"
