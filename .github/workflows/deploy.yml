@@ -3,7 +3,7 @@ name: Deploy CTF Challenge to VPS
 on:
   push:
     branches:
-      - main # Perintah jalan otomatis jika kamu push ke branch main
+      - main
 
 jobs:
   deploy:
@@ -12,24 +12,26 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # Langkah 1: Kirim file dari GitHub Runner ke VPS kamu menggunakan SCP
+      # Langkah 1: Kirim file via SCP
       - name: Copy Files to VPS
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
+          passphrase: ${{ secrets.VPS_SSH_PASSPHRASE }} # <-- TAMBAHKAN BARIS INI
           port: 22
-          source: "web-broken-access/*" # Mengirim semua isi folder challenge
-          target: "/home/${{ secrets.VPS_USER }}/ctf-challenges" # Folder tujuan di VPS
+          source: "web-broken-access/*"
+          target: "/home/${{ secrets.VPS_USER }}/ctf-challenges"
 
-      # Langkah 2: Eksekusi Docker Compose di dalam VPS via SSH
+      # Langkah 2: Eksekusi Docker Compose via SSH
       - name: Run Docker Compose on VPS
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
+          passphrase: ${{ secrets.VPS_SSH_PASSPHRASE }} # <-- TAMBAHKAN BARIS INI ALSO
           port: 22
           script: |
             cd /home/${{ secrets.VPS_USER }}/ctf-challenges/web-broken-access
