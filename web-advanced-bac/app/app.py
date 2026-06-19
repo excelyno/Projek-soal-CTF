@@ -49,7 +49,7 @@ def tenant_webhook(tenant_id):
     if not token:
         return jsonify({"status": "unauthenticated"}), 401
     
-    if tenant_id Packs not in TENANT_DB:
+    if tenant_id not in TENANT_DB:
         return jsonify({"error": "Tenant not found"}), 404
 
     # JALUR GET: Melihat konfigurasi saat ini
