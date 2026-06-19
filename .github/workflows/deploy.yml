@@ -19,21 +19,24 @@ jobs:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          passphrase: ${{ secrets.VPS_SSH_PASSPHRASE }} # <-- TAMBAHKAN BARIS INI
+          passphrase: ${{ secrets.VPS_SSH_PASSPHRASE }}
           port: 22
-          source: "web-broken-access/*"
-          target: "/home/${{ secrets.VPS_USER }}/ctf-challenges"
+        source: "web-broken-access/*,web-crypto-failure/*" # <-- UBAH INI (Pakai koma tanpa spasi)
+        target: "/home/${{ secrets.VPS_USER }}/ctf-challenges"
 
-      # Langkah 2: Eksekusi Docker Compose via SSH
       - name: Run Docker Compose on VPS
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.VPS_HOST }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          passphrase: ${{ secrets.VPS_SSH_PASSPHRASE }} # <-- TAMBAHKAN BARIS INI ALSO
+          passphrase: ${{ secrets.VPS_SSH_PASSPHRASE }}
           port: 22
-          script: |
-            cd /home/${{ secrets.VPS_USER }}/ctf-challenges/web-broken-access
-            docker compose down || true
-            docker compose up -d --build
+        script: |
+          # Deploy Soal 1
+          cd /home/${{ secrets.VPS_USER }}/ctf-challenges/web-broken-access
+          docker compose up -d --build
+
+          # Deploy Soal 2
+          cd /home/${{ secrets.VPS_USER }}/ctf-challenges/web-crypto-failure
+          docker compose up -d --build
