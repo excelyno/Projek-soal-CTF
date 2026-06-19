@@ -5,7 +5,7 @@ import os
 app = Flask(__name__)
 
 # Password asli: adminp4ss
-ADMIN_HASH = "93d8b51239aa806b7daaf688321cb170"
+ADMIN_HASH = "d86863a4d839d195805e39363613b6fe"
 FLAG = "CTF{md5_w1th0ut_s4lt_1s_us3l3ss_2026}"
 
 @app.route('/', methods=['GET', 'POST'])
