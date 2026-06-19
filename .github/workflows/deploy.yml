@@ -21,7 +21,7 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           passphrase: ${{ secrets.VPS_SSH_PASSPHRASE }}
           port: 22
-          source: "web-broken-access/*,web-crypto-failure/*,web-advanced-bac/*" # <-- Sudah digeser masuk ke dalam 'with'
+          source: "web-broken-access/*,web-crypto-failure/*,web-advanced-bac/*,web-rce-injection/*" # <-- Sudah digeser masuk ke dalam 'with'
           target: "/home/${{ secrets.VPS_USER }}/ctf-challenges" # <-- Sudah digeser masuk ke dalam 'with'
 
       # Langkah 2: Eksekusi di VPS via SSH
@@ -46,5 +46,10 @@ jobs:
 
             # Deploy Soal 3 (Advanced BAC)
             cd /home/${{ secrets.VPS_USER }}/ctf-challenges/web-advanced-bac
+            docker compose down || true
+            docker compose up -d --build
+
+            # Deploy Soal 4
+            cd /home/${{ secrets.VPS_USER }}/ctf-challenges/web-rce-injection
             docker compose down || true
             docker compose up -d --build
