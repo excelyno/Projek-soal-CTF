@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>SaaS Developer Console</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f6f9; color: #333; padding: 40px; }
+        .card { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); max-width: 600px; margin: auto; }
+        h1 { color: #1e3a8a; font-size: 24px; }
+        input { width: 100%; padding: 10px; margin: 15px 0; border: 1px solid #cbd5e1; border-radius: 4px; box-sizing: border-radius; }
+        button { background: #2563eb; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #1d4ed8; }
+        .info { background: #eff6ff; padding: 12px; border-left: 4px solid #2563eb; font-size: 14px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>SaaS Developer Notification Settings</h1>
+        <p>Welcome to Developer Sandbox. Configure your event log integration stream below.</p>
+        <div class="info">Current Account Domain Context: <strong>Tenant ID: 2 (Sandbox Group)</strong></div>
+        
+        <label for="webhook">Developer Outbound Webhook Target:</label>
+        <input type="text" id="webhook" placeholder="https://your-server.com/callback">
+        <button onclick="updateWebhook()">Save Integration</button>
+        <p id="msg" style="color: green; font-weight: bold;"></p>
+    </div>
+
+    <script>
+        // RECON CLUE: Saat halaman dimuat, dia menembak API endpoint tersembunyi
+        // Pemain yang jeli akan melihat request ini di F12 -> Network tab
+        fetch('/api/v1/tenant/2/webhook')
+            .then(res => res.json())
+            .then(res => {
+                if(res.data) document.getElementById('webhook').value = res.data.webhook_url;
+            });
+
+        function updateWebhook() {
+            const url = document.getElementById('webhook').value;
+            fetch('/api/v1/tenant/2/webhook', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ webhook_url: url })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if(data.status === "success") {
+                    document.getElementById('msg').innerText = "Settings saved successfully.";
+                }
+            });
+        }
+    </script>
+</body>
+</html>

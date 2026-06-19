@@ -1,0 +1,8 @@
+version: "3.8"
+
+services:
+  advanced-bac-challenge:
+    build: .
+    ports:
+      - "8083:5000"
+    restart: always
