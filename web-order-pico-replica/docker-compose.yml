@@ -1,0 +1,8 @@
+version: "3.8"
+
+services:
+  pico-order-replica-challenge:
+    build: .
+    ports:
+      - "8086:5000"
+    restart: always

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Global Defense Logistics Console</title>
+    <style>
+        body { font-family: 'Courier New', monospace; background: #05070a; color: #39ff14; padding: 30px; }
+        .wrapper { max-width: 1000px; margin: auto; border: 1px solid #39ff14; padding: 25px; box-shadow: 0 0 15px rgba(57, 255, 20, 0.2); }
+        .header { border-bottom: 2px dashed #39ff14; padding-bottom: 15px; margin-bottom: 20px; }
+        .system-status { font-size: 12px; color: #00ffff; float: right; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #1f401f; padding: 12px; text-align: left; }
+        th { background: #0c131a; color: #00ffff; }
+        .search-box { margin-bottom: 20px; }
+        input[type="text"] { background: #000; border: 1px solid #39ff14; color: #39ff14; padding: 8px; width: 250px; font-family: inherit; }
+        input[type="submit"], .btn-sort { background: #132213; border: 1px solid #39ff14; color: #39ff14; padding: 8px 15px; cursor: pointer; text-decoration: none; font-size: 12px; }
+        input[type="submit"]:hover, .btn-sort:hover { background: #39ff14; color: #000; }
+        .alert { background: #2a0808; border: 1px solid #ff0000; color: #ff3333; padding: 10px; margin-top: 15px; font-size: 13px; }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="header">
+            <span class="system-status">SECURE NODE // AUTH_USER: operator_lyno</span>
+            <h1>⚡ HQ MILITARY FREIGHT LOGISTICS</h1>
+            <p>Terminal Pusat Pemantauan Arus Kargo Strategis Global.</p>
+        </div>
+
+        <div class="search-box">
+            <form method="GET" action="/">
+                <label>Filter Cargo/Dest: </label>
+                <input type="text" name="search" value="{{ search }}" placeholder="Ketik kata kunci...">
+                <input type="submit" value="EXECUTE FILTER">
+            </form>
+        </div>
+
+        <div>
+            <span>Urutkan Berdasarkan: </span>
+            <a class="btn-sort" href="/?search={{ search }}&order=order_id">ORDER ID</a>
+            <a class="btn-sort" href="/?search={{ search }}&order=destination">DESTINATION</a>
+            <a class="btn-sort" href="/?search={{ search }}&order=quantity">QUANTITY</a>
+        </div>
+
+        {% if error %}
+            <div class="alert">{{ error }}</div>
+        {% endif %}
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ORDER ID</th>
+                    <th>DESTINATION TARGET</th>
+                    <th>CARGO MANIFEST</th>
+                    <th>QUANTITY (UNITS)</th>
+                    <th>CLEARANCE RATING</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in orders %}
+                <tr>
+                    <td><code>{{ row[0] }}</code></td>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[2] }}</td>
+                    <td><strong>{{ row[3] }}</strong></td>
+                    <td><span style="color: #ffcc00;">{{ row[4] }}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div style="margin-top: 30px; font-size: 11px; color: #444;">
+            Active Database Context State: <code>ORDER BY {{ current_order }}</code>
+        </div>
+    </div>
+</body>
+</html>
