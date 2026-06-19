@@ -1,0 +1,8 @@
+version: "3.8"
+
+services:
+  crypto-failure-challenge:
+    build: .
+    ports:
+      - "8082:5000" # Di VPS nanti jalannya di port 8082
+    restart: always
